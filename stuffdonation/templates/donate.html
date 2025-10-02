@@ -1,0 +1,338 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Now - Stuff Donations</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+
+body {
+    background: url("{% static 'images/banner1.jpg' %}") no-repeat center center/cover;
+    position: relative;
+}
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
+    z-index: -1;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+select, textarea, input[type="text"], input[type="email"], input[type="number"], input[type="file"], input[type="date"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+.hidden {
+    display: none;
+}
+.checkbox-group {
+    margin: 15px 0;
+    justify-content: center;
+}
+.checkbox-group label {
+    margin-right: 20px;
+    color: #fff;
+    font-size: 16px;
+}
+.form-container {
+    background: rgba(0, 0, 0, 0.9);
+    max-width: 700px;
+    margin: 80px auto;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.8);
+    text-align: center;
+}
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fdbb2d;
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fdbb2d;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+input[type="file"] {
+    display: none;
+}
+.file-name {
+    color: white;
+    margin-left: 10px;
+}
+label {
+    color: white;
+}
+button.btn, a.btn {
+    background-color: #fdbb2d;
+    color: black;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+
+header {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px 0;
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: 65px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    list-style: none;
+    background-color: rgba(0, 0, 0, 0); 
+    padding: 10px 30px;
+    position: relative;
+    z-index: 100;
+}
+.navbar li {
+    margin-left: 25px;
+    position: relative;
+}
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+    color: #fdbb2d;
+}
+
+
+.profile-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; 
+    right: 0;
+    background-color: #333;
+    color: white;
+    min-width: 220px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 10px 0;
+}
+
+.dropdown-content li {
+    padding: 8px 16px;
+    text-align: left;
+}
+.dropdown-content li strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #fdbb2d;
+}
+.dropdown-content li a {
+    color: white;
+    display: block;
+}
+.dropdown-content li a:hover {
+    background-color: #444;
+    border-radius: 5px;
+}
+
+
+.profile-menu:hover .dropdown-content {
+    display: block;
+}
+
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="header-content">
+            <h1>Stuff Donation</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'donate' %}" class="active">Donate Now</a></li>
+
+                {% if user.is_authenticated %}
+                <li class="profile-menu">
+                    <a href="javascript:void(0);" id="profileLink">Profile ▼</a>
+                    <ul class="dropdown-content" id="profileDropdown">
+                        <li><strong>Username:</strong> {{ user.username }}</li>
+                        <li><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</li>
+                        <li><strong>Mobile:</strong> {{ user.profile.mobile_number }}</li>
+                        <li><a href="{% url 'donation_history' %}">Donation History</a></li>
+                        <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            </nav>
+        </div>
+    </header>
+
+   
+    <section class="form-container">
+        <h2>Donate Your Items</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="text" name="phone" placeholder="Phone Number" required>
+            <input type="text" name="address" placeholder="Address" required>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="medicineCheck" onchange="toggleFields('medicine')"> Medicines</label>
+                <label><input type="checkbox" id="clothesCheck" onchange="toggleFields('clothes')"> Clothes</label>
+                <label><input type="checkbox" id="booksCheck" onchange="toggleFields('books')"> Books</label>
+                <label><input type="checkbox" id="toysCheck" onchange="toggleFields('toys')"> Toys</label>
+            </div>
+
+           
+            <div id="medicine_fields" class="hidden">
+                <h3 style="color: #fdbb2d;">Medicine Details</h3>
+                <input type="number" name="medicine_quantity" placeholder="Quantity" min="1">
+                <textarea name="medicine_description" placeholder="Description"></textarea>
+                <label class="custom-file-upload">
+                    <input type="file" name="medicine_image" onchange="showFileName(this, 'medicine_file_name')">
+                    Upload Image
+                </label>
+                <span class="file-name" id="medicine_file_name">No file chosen</span><br>
+                <label>Manufacture Date:</label>
+                <input type="date" name="mfg_date"><br>
+                <label>Expiry Date:</label>
+                <input type="date" name="exp_date">
+            </div>
+
+            <div id="clothes_fields" class="hidden">
+                <h3 style="color: #fdbb2d;">Clothes Details</h3>
+                <input type="number" name="clothes_quantity" placeholder="Quantity" min="1">
+                <textarea name="clothes_description" placeholder="Description"></textarea>
+                <label class="custom-file-upload">
+                    <input type="file" name="clothes_image" onchange="showFileName(this, 'clothes_file_name')">
+                    Upload Image
+                </label>
+                <span class="file-name" id="clothes_file_name">No file chosen</span><br>
+            </div>
+
+      
+            <div id="books_fields" class="hidden">
+                <h3 style="color: #fdbb2d;">Books Details</h3>
+                <input type="number" name="books_quantity" placeholder="Quantity" min="1">
+                <textarea name="books_description" placeholder="Description"></textarea>
+                <label class="custom-file-upload">
+                    <input type="file" name="books_image" onchange="showFileName(this, 'books_file_name')">
+                    Upload Image
+                </label>
+                <span class="file-name" id="books_file_name">No file chosen</span><br>
+            </div>
+
+        
+            <div id="toys_fields" class="hidden">
+                <h3 style="color: #fdbb2d;">Toys Details</h3>
+                <input type="number" name="toys_quantity" placeholder="Quantity" min="1">
+                <textarea name="toys_description" placeholder="Description"></textarea>
+                <label class="custom-file-upload">
+                    <input type="file" name="toys_image" onchange="showFileName(this, 'toys_file_name')">
+                    Upload Image
+                </label>
+                <span class="file-name" id="toys_file_name">No file chosen</span><br>
+            </div>
+
+            <button type="submit" class="btn">Donate Now</button>
+        </form>
+    </section>
+
+ 
+    <script>
+     
+        function toggleFields(section) {
+            var checkbox = document.getElementById(section + "Check");
+            var fields = document.getElementById(section + "_fields");
+            fields.classList.toggle('hidden', !checkbox.checked);
+        }
+
+  
+        function showFileName(input, spanId) {
+            const fileName = input.files[0] ? input.files[0].name : "No file chosen";
+            document.getElementById(spanId).textContent = fileName;
+        }
+
+
+        document.getElementById("profileLink")?.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        });
+
+
+        window.onclick = function () {
+            var dropdown = document.getElementById("profileDropdown");
+            if (dropdown && dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>

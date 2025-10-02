@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Stuff Donations</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            background: url("{% static 'images/banner1.jpg' %}") no-repeat center center/cover;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.0);
+            z-index: -1;
+        }
+        .input-field {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            background-color: #e0e0e0;
+            font-size: 16px;
+            }
+         .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .messageerror {
+            background-color: #f8d7da;
+            color: #a13742;
+            border: 1px solid #f5c6cb;
+        }
+
+
+    </style>
+</head>
+<body>
+    {% if error_message %}
+        <div class="message messageerror">{{ error_message }}</div>
+    {% endif %}
+    <header>
+        <div class="header-content">
+            <h1>Stuff Donation</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'register' %}"  class="active">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'donate' %}">Donate Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="form-container">
+        <h2>Create an Account</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="tel" name="mobile_number" placeholder="Mobile Number" pattern="[0-9]{10}" required><br>
+            <button type="submit" class="btn">Register</button>
+            <a href="{% url 'home' %}" class="btn">Back</a>
+        </form>
+    </section>
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
